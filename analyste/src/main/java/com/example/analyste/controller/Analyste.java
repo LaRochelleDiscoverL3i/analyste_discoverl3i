@@ -14,6 +14,7 @@ public class Analyste {
 
     @Autowired
     ProgressionService progressionService;
+    CuriositeService curiositeService;
 
     @RequestMapping(value = "/analyse", method = RequestMethod.GET)
     @ResponseBody
@@ -30,6 +31,14 @@ public class Analyste {
 
 
         progressionService.createProgression(progression);
+
+    }
+
+    @RequestMapping(value = "/curiosite", method = RequestMethod.POST)
+    void addCuriosite(@RequestBody Curiosite curiosite){
+
+
+        curiositeService.createCuriosite(curiosite);
 
     }
 
