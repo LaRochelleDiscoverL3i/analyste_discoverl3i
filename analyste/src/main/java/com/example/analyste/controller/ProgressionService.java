@@ -1,11 +1,6 @@
 package com.example.analyste.controller;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-
+import java.util.*;
 
 
 public interface ProgressionService {
@@ -13,6 +8,8 @@ public interface ProgressionService {
     public abstract ArrayList<String> getInformations();
     public HashMap<String, Timestamp> getJoueur_timestamp(String joueur) ;
     public abstract void sendGlobalApi();
+
+    public  abstract List<String> calcultime(Map<String, Timestamp> map );
 
 
 }
