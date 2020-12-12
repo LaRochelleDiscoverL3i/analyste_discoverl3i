@@ -25,13 +25,12 @@ public class Analyste {
         return curiositeService.getInformations();
     }
 
-    @RequestMapping(value = "/api_curiosite/{joueur}", method = RequestMethod.GET)
-    @ResponseBody
-     Curiosite getInfos(@PathVariable String joueur) {
 
-        return curiositeService.getInformations();
+
+    @Scheduled(fixedRate = 10000)
+    public void greeting() {
+        curiositeService.AnalyseCuriosite();
     }
-
 
     @RequestMapping(value = "/progression", method = RequestMethod.POST)
     void addCreation(@RequestBody Creation creation){
@@ -45,7 +44,7 @@ public class Analyste {
     void addCuriosite(@RequestBody Curiosite curiosite){
 
 
-        curiositeService.createCuriosite(curiosite);
+        curiositeService.sendCuriosite(curiosite);
 
     }
 

@@ -24,7 +24,7 @@ public class CuriositeServiceImpl implements CuriositeService {
 
     }
     @Override
-    public void createCuriosite(Curiosite curiosite) {
+    public void sendCuriosite(Curiosite curiosite) {
         level =levelcuriosite(curiosite.getNbre_scan());
         sendGlobalApi(curiosite.getJoueur(), level);
 
@@ -44,22 +44,26 @@ public class CuriositeServiceImpl implements CuriositeService {
     }
 
     @Override
-    public List<String> calcultime() {
+    public void AnalyseCuriosite() {
+        RestTemplate template = new RestTemplate();
+        String uri = "http://localhost:8080/api/";
         Iterator it = this.map.entrySet().iterator();
-        List<String> list= new ArrayList<>();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             System.out.println(pair.getKey() + " = " + pair.getValue());
             Timestamp timestamp= (Timestamp)pair.getValue();
             Timestamp current = new Timestamp(System.currentTimeMillis());
             if ( current.getTime() - timestamp.getTime() == 1000 ) {
-                list.add(pair.getKey().toString());
+              Curiosite  curiosite = template.getForObject(uri.concat(pair.getKey().toString()), Curiosite.class);
+
+                sendCuriosite(curiosite);
+                timestamp= new Timestamp(System.currentTimeMillis());
+                pair.setValue(timestamp);
+
             }
             it.remove();
         }
 
-
-        return list;
     }
 
     @Override
