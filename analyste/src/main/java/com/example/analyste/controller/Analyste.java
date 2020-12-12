@@ -75,7 +75,7 @@ public class Analyste {
         analysteService.AnalyseProgression();
     }
 
-    @RequestMapping(value = "/creation", method = RequestMethod.POST)
+    @RequestMapping(value = "/analyste/creation", method = RequestMethod.POST)
     void addCreation(@RequestBody Creation creation){
         analysteService.createCreation(creation);
 

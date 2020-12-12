@@ -60,7 +60,7 @@ public class AnalysteServiceImpl implements AnalysteService {
     public void sendCuriosite(Curiosite curiosite) {
         System.out.println("sendCuriosite");
         level =levelcuriosite(curiosite.getNbre_scan());
-        String url = "http://localhost:8080/api_curio";
+        String url = "http://localhost:8083/api_curio";
         sendGlobalApi(curiosite.getJoueur(), level, url);
 
     }
@@ -81,7 +81,7 @@ public class AnalysteServiceImpl implements AnalysteService {
     public void AnalyseCuriosite() {
         RestTemplate template = new RestTemplate();
         System.out.println("analyse curiosite");
-        String uri = "http://localhost:8080/api/curiosite/";
+        String uri = "http://localhost:8083/api/curiosite/";
 
 
         Map<String, Timestamp > map1=map_curio;
@@ -132,7 +132,7 @@ public class AnalysteServiceImpl implements AnalysteService {
 
         RestTemplate template = new RestTemplate();
         System.out.println("analyse progression");
-        String uri = "http://localhost:8080/api/progression/";
+        String uri = "http://localhost:8083/api/progression/";
 
 
         Map<String, Timestamp > mapPro=map_prog;
@@ -178,7 +178,7 @@ public class AnalysteServiceImpl implements AnalysteService {
 
         System.out.println("sendProgression");
         level =levelprogression(progression.getNbre_reponse());
-        String url = "http://localhost:8080/api_prog";
+        String url = "http://localhost:8083/api_prog";
         sendGlobalApi(progression.getJoueur(), level, url);
     }
 
