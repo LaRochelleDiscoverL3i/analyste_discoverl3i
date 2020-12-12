@@ -15,6 +15,7 @@ public class CuriositeServiceImpl implements CuriositeService {
     static {
         test_api = new HashMap<>();
         test_api.put("med",2);
+        test_api.put("didi",3);
         //test_api.put("sidi", 3);
     }
 
@@ -82,28 +83,36 @@ public class CuriositeServiceImpl implements CuriositeService {
         RestTemplate template = new RestTemplate();
         System.out.println("analyse curiosite");
         String uri = "http://localhost:8080/api/";
-        Iterator it = map.entrySet().iterator();
+
         Creation p1= new Creation();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            System.out.println(pair.getKey() + " = " + pair.getValue());
-            Timestamp timestamp= (Timestamp)pair.getValue();
+        Map<String, Timestamp > map1=map;
+
+        for (Map.Entry<String, Timestamp> entry : map1.entrySet()) {
+            Timestamp timestamp= (Timestamp)entry.getValue();
             Timestamp current = new Timestamp(System.currentTimeMillis());
-            if ( current.getTime() - 1000  >= timestamp.getTime() ) {
-                System.out.println(" ----" +pair.getKey().toString());
-              Curiosite  curiosite = template.getForObject(uri.concat(pair.getKey().toString()), Curiosite.class);
+            if ( current.getTime() - timestamp.getTime()  >= 10000 && entry!=null) {
+                System.out.println(" ----" +entry.getKey().toString());
+                Curiosite  curiosite = template.getForObject(uri.concat(entry.getKey().toString()), Curiosite.class);
                 System.out.println("curiosite joeur");
                 sendCuriosite(curiosite);
                 timestamp= new Timestamp(System.currentTimeMillis());
                 //map.put(pair.getKey().toString(),timestamp);
 
-                p1.setJoueur(pair.getKey().toString());
+                p1.setJoueur(entry.getKey().toString());
+                map.put(p1.joueur, timestamp);
+
 
 
 
             }
-            it.remove();
+
         }
+
+
+        System.out.println(" -------------------");
+
+
+
 
 
     }

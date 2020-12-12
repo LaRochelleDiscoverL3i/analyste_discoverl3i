@@ -42,7 +42,7 @@ public class Analyste {
 
 
 
-    @Scheduled(fixedRate = 9000)
+    @Scheduled(fixedRate = 3000)
     public void greeting() {
 
         curiositeService.AnalyseCuriosite();
