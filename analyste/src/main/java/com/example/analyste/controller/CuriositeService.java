@@ -7,6 +7,7 @@ import java.util.Map;
 public interface CuriositeService {
 
     public abstract void sendCuriosite(Curiosite curiosite);
+    public abstract Curiosite find(String joueur);
     public abstract void createCreation(Creation creation);
     public abstract void AnalyseCuriosite( );
     public abstract void sendGlobalApi(String joueur, String level);
