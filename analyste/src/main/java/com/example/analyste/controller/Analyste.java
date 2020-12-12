@@ -43,7 +43,7 @@ public class Analyste {
 
     }
 
-    @RequestMapping(value = "/api", method = RequestMethod.POST)
+    @RequestMapping(value = "/api_curio", method = RequestMethod.POST)
     void sendtoapiCurio(@RequestBody Map<String, String > map){
 
         System.out.println("joueur: ");
@@ -53,15 +53,23 @@ public class Analyste {
 
     }
 
+    @RequestMapping(value = "/api_prog", method = RequestMethod.POST)
+    void sendtoapiProg(@RequestBody Map<String, String > map){
+
+        System.out.println("joueur: ");
+        System.out.println(map);
+        System.out.println("super");
 
 
-    @Scheduled(fixedRate = 3000)
+    }
+
+    @Scheduled(fixedRate = 5000)
     public void curiosite() {
 
         analysteService.AnalyseCuriosite();
     }
 
-    @Scheduled(fixedRate = 8000)
+    @Scheduled(fixedRate = 10000)
     public void progression() {
 
         analysteService.AnalyseProgression();
@@ -73,20 +81,6 @@ public class Analyste {
 
     }
 
-    @RequestMapping(value = "/curiosite", method = RequestMethod.POST)
-    void addCuriosite(@RequestBody Curiosite curiosite){
 
-
-        analysteService.sendCuriosite(curiosite);
-
-    }
-
-    @RequestMapping(value = "/progression", method = RequestMethod.POST)
-    void addCuriosite(@RequestBody Progression progression){
-
-
-        analysteService.sendProgression(progression);
-
-    }
 
 }

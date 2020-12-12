@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 
 public class Creation {
 
-    String joueur;
-    Timestamp timestamp;
+    private String joueur;
+    private Timestamp timestamp;
 
     public Creation(){
         this.timestamp=new Timestamp(System.currentTimeMillis());

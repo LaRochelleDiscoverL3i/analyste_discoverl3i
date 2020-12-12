@@ -7,8 +7,11 @@ import org.springframework.web.client.RestTemplate;;
 import java.sql.Timestamp;
 import java.util.*;
 
+
 @Service
 public class AnalysteServiceImpl implements AnalysteService {
+
+
     private static Map<String, Timestamp > map_curio = new HashMap<>();
     private static Map<String, Timestamp > map_prog = new HashMap<>();
 
@@ -38,9 +41,6 @@ public class AnalysteServiceImpl implements AnalysteService {
 
     }
 
-    public void remove_curio(Creation creation){
-        map_curio.remove(creation.getJoueur());
-    }
 
     @Override
     public Curiosite find_curiosite(String joueur){
@@ -51,10 +51,8 @@ public class AnalysteServiceImpl implements AnalysteService {
             if(entry.getKey().toString().equals(joueur)){
                 curio.setJoueur(entry.getKey().toString());
                 curio.setNbre_scan(entry.getValue());
-                System.out.println("find j");
 
             }
-            System.out.println(entry.getKey().toString() + ":" + entry.getValue());
         }
         return curio;
     }
@@ -62,8 +60,8 @@ public class AnalysteServiceImpl implements AnalysteService {
     public void sendCuriosite(Curiosite curiosite) {
         System.out.println("sendCuriosite");
         level =levelcuriosite(curiosite.getNbre_scan());
-        String url = "http://localhost:8080/api/curiosite/";
-        sendGlobalApi(curiosite.getJoueur(), level, url.concat(curiosite.getJoueur()));
+        String url = "http://localhost:8080/api_curio";
+        sendGlobalApi(curiosite.getJoueur(), level, url);
 
     }
 
@@ -83,7 +81,7 @@ public class AnalysteServiceImpl implements AnalysteService {
     public void AnalyseCuriosite() {
         RestTemplate template = new RestTemplate();
         System.out.println("analyse curiosite");
-        String uri = "http://localhost:8080/api/";
+        String uri = "http://localhost:8080/api/curiosite/";
 
 
         Map<String, Timestamp > map1=map_curio;
@@ -91,7 +89,7 @@ public class AnalysteServiceImpl implements AnalysteService {
         for (Map.Entry<String, Timestamp> entry : map1.entrySet()) {
             Timestamp timestamp= (Timestamp)entry.getValue();
             Timestamp current = new Timestamp(System.currentTimeMillis());
-            if ( current.getTime() - timestamp.getTime()  >= 100000 && entry!=null) {
+            if ( current.getTime() - timestamp.getTime()  >= 70000 && entry!=null) {
                 System.out.println(" ----" +entry.getKey().toString());
                 Curiosite  curiosite = template.getForObject(uri.concat(entry.getKey().toString()), Curiosite.class);
                 sendCuriosite(curiosite);
@@ -134,7 +132,7 @@ public class AnalysteServiceImpl implements AnalysteService {
 
         RestTemplate template = new RestTemplate();
         System.out.println("analyse progression");
-        String uri = "http://localhost:8080/api/";
+        String uri = "http://localhost:8080/api/progression/";
 
 
         Map<String, Timestamp > mapPro=map_prog;
@@ -142,7 +140,7 @@ public class AnalysteServiceImpl implements AnalysteService {
         for (Map.Entry<String, Timestamp> entry : mapPro.entrySet()) {
             Timestamp timestamp= (Timestamp)entry.getValue();
             Timestamp current = new Timestamp(System.currentTimeMillis());
-            if ( current.getTime() - timestamp.getTime()  >= 100000 && entry!=null) {
+            if ( current.getTime() - timestamp.getTime()  >= 90000 && entry!=null) {
                 System.out.println(" ----" +entry.getKey().toString());
                 Progression  progression = template.getForObject(uri.concat(entry.getKey().toString()), Progression.class);
                 sendProgression(progression);
@@ -171,10 +169,8 @@ public class AnalysteServiceImpl implements AnalysteService {
             if(entry.getKey().toString().equals(joueur)){
                 progression.setJoueur(entry.getKey().toString());
                 progression.setNbre_reponse(entry.getValue());
-                System.out.println("find j");
 
             }
-            System.out.println(entry.getKey().toString() + ":" + entry.getValue());
         }
         return progression;    }
 
@@ -182,8 +178,8 @@ public class AnalysteServiceImpl implements AnalysteService {
 
         System.out.println("sendProgression");
         level =levelprogression(progression.getNbre_reponse());
-        String url = "http://localhost:8080/api/progression/";
-        sendGlobalApi(progression.getJoueur(), level, url.concat(progression.getJoueur()));
+        String url = "http://localhost:8080/api_prog";
+        sendGlobalApi(progression.getJoueur(), level, url);
     }
 
     private String levelprogression(int nbre_reponse) {
