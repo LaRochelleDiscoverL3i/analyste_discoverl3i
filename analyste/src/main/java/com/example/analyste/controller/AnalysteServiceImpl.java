@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 @Service
-public class CuriositeServiceImpl implements CuriositeService {
+public class AnalysteServiceImpl implements AnalysteService {
     private static Map<String, Timestamp > map = new HashMap<>();
 
     private static Map<String, Integer > test_api ;

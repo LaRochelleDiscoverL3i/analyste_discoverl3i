@@ -16,20 +16,20 @@ public class Analyste {
 
 
     @Autowired
-    CuriositeService curiositeService;
+    AnalysteService analysteService;
 
     @RequestMapping(value = "/progression_test", method = RequestMethod.GET)
     @ResponseBody
     Map<String, Timestamp> getInfos() {
 
-        return curiositeService.getInformations();
+        return analysteService.getInformations();
     }
 
     @RequestMapping(value = "/api/{joueur}", method = RequestMethod.GET)
     @ResponseBody
     Curiosite getcuriositeapi(@PathVariable String joueur) {
 
-        return curiositeService.find(joueur);
+        return analysteService.find(joueur);
     }
 
     @RequestMapping(value = "/api", method = RequestMethod.POST)
@@ -47,14 +47,14 @@ public class Analyste {
     @Scheduled(fixedRate = 3000)
     public void greeting() {
 
-        curiositeService.AnalyseCuriosite();
+        analysteService.AnalyseCuriosite();
     }
 
     @RequestMapping(value = "/progression", method = RequestMethod.POST)
     void addCreation(@RequestBody Creation creation){
 
 
-        curiositeService.createCreation(creation);
+        analysteService.createCreation(creation);
 
     }
 
@@ -62,7 +62,7 @@ public class Analyste {
     void addCuriosite(@RequestBody Curiosite curiosite){
 
 
-        curiositeService.sendCuriosite(curiosite);
+        analysteService.sendCuriosite(curiosite);
 
     }
 

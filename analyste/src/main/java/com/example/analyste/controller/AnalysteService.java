@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-public interface CuriositeService {
+public interface AnalysteService {
 
     public abstract void sendCuriosite(Curiosite curiosite);
     public abstract Curiosite find(String joueur);
