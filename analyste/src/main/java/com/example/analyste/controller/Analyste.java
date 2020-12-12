@@ -14,22 +14,33 @@ import java.util.Map;
 public class Analyste {
 
 
-
     @Autowired
     AnalysteService analysteService;
 
-    @RequestMapping(value = "/progression_test", method = RequestMethod.GET)
+    @RequestMapping(value = "/curiosite_test", method = RequestMethod.GET)
     @ResponseBody
-    Map<String, Timestamp> getInfos() {
+    Map<String, Timestamp> getInfos_curio() {
 
-        return analysteService.getInformations();
+        return analysteService.getMap_curio();
     }
 
-    @RequestMapping(value = "/api/{joueur}", method = RequestMethod.GET)
+    @RequestMapping(value = "/progression_test", method = RequestMethod.GET)
     @ResponseBody
-    Curiosite getcuriositeapi(@PathVariable String joueur) {
+    Map<String, Timestamp> getInfos_prog() {
 
-        return analysteService.find(joueur);
+        return analysteService.getMap_prog();
+    }
+
+
+    @RequestMapping(value = "/api/{type}/{joueur}", method = RequestMethod.GET)
+    @ResponseBody
+    Object getAnalysteapi(@PathVariable String joueur, @PathVariable String type) {
+    if (type.equals("curiosite")){
+        return analysteService.find_curiosite(joueur);}
+        else {
+    return analysteService.find_progression(joueur);
+        }
+
     }
 
     @RequestMapping(value = "/api", method = RequestMethod.POST)
@@ -45,15 +56,19 @@ public class Analyste {
 
 
     @Scheduled(fixedRate = 3000)
-    public void greeting() {
+    public void curiosite() {
 
         analysteService.AnalyseCuriosite();
     }
 
-    @RequestMapping(value = "/progression", method = RequestMethod.POST)
+    @Scheduled(fixedRate = 8000)
+    public void progression() {
+
+        analysteService.AnalyseProgression();
+    }
+
+    @RequestMapping(value = "/creation", method = RequestMethod.POST)
     void addCreation(@RequestBody Creation creation){
-
-
         analysteService.createCreation(creation);
 
     }
@@ -63,6 +78,14 @@ public class Analyste {
 
 
         analysteService.sendCuriosite(curiosite);
+
+    }
+
+    @RequestMapping(value = "/progression", method = RequestMethod.POST)
+    void addCuriosite(@RequestBody Progression progression){
+
+
+        analysteService.sendProgression(progression);
 
     }
 

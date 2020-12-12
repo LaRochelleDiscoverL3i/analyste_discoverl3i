@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 
 public class Curiosite {
 
-    String joueur;
-    int nbre_scan;
+    private String joueur;
+    private int nbre_scan;
 
     public Curiosite(){};
     public Curiosite(String joueur, int nbre_scan){

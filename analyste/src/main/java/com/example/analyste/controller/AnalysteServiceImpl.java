@@ -9,7 +9,8 @@ import java.util.*;
 
 @Service
 public class AnalysteServiceImpl implements AnalysteService {
-    private static Map<String, Timestamp > map = new HashMap<>();
+    private static Map<String, Timestamp > map_curio = new HashMap<>();
+    private static Map<String, Timestamp > map_prog = new HashMap<>();
 
     private static Map<String, Integer > test_api ;
     static {
@@ -31,16 +32,18 @@ public class AnalysteServiceImpl implements AnalysteService {
         p.setJoueur(creation.getJoueur());
         System.out.println(creation.getJoueur());
         System.out.println(p.getJoueur());
-        map.put(p.getJoueur(),p.getTimestamp());
+        map_curio.put(p.getJoueur(),p.getTimestamp());
+        map_prog.put(p.getJoueur(),p.getTimestamp());
+
 
     }
 
-    public void remove(Creation creation){
-        map.remove(creation.getJoueur());
+    public void remove_curio(Creation creation){
+        map_curio.remove(creation.getJoueur());
     }
 
     @Override
-    public Curiosite find(String joueur){
+    public Curiosite find_curiosite(String joueur){
 
 
         Curiosite curio = new Curiosite();
@@ -59,14 +62,14 @@ public class AnalysteServiceImpl implements AnalysteService {
     public void sendCuriosite(Curiosite curiosite) {
         System.out.println("sendCuriosite");
         level =levelcuriosite(curiosite.getNbre_scan());
-        sendGlobalApi(curiosite.getJoueur(), level);
+        String url = "http://localhost:8080/api/curiosite/";
+        sendGlobalApi(curiosite.getJoueur(), level, url.concat(curiosite.getJoueur()));
 
     }
 
     @Override
-    public void sendGlobalApi(String joueur, String level) {
+    public void sendGlobalApi(String joueur, String level, String url) {
         RestTemplate template = new RestTemplate();
-        String url = "http://localhost:8080/api";
         Map<String, String > map = new HashMap<>();
         map.put("joueur" , joueur);
         map.put("level" , level);
@@ -83,7 +86,7 @@ public class AnalysteServiceImpl implements AnalysteService {
         String uri = "http://localhost:8080/api/";
 
 
-        Map<String, Timestamp > map1=map;
+        Map<String, Timestamp > map1=map_curio;
 
         for (Map.Entry<String, Timestamp> entry : map1.entrySet()) {
             Timestamp timestamp= (Timestamp)entry.getValue();
@@ -97,7 +100,7 @@ public class AnalysteServiceImpl implements AnalysteService {
                 Creation p1= new Creation();
 
                 p1.setJoueur(entry.getKey().toString());
-                map.put(p1.getJoueur(), timestamp);
+                map_curio.put(p1.getJoueur(), timestamp);
 
 
 
@@ -116,11 +119,87 @@ public class AnalysteServiceImpl implements AnalysteService {
     }
 
     @Override
-    public Map<String, Timestamp> getInformations() {
-        return map;
+    public Map<String, Timestamp> getMap_curio() {
+        return map_curio;
+    }
+    @Override
+    public Map<String, Timestamp> getMap_prog() {
+        return map_prog;
     }
 
-    public String levelcuriosite(int nbre_scan) {
+
+
+    @Override
+    public void AnalyseProgression() {
+
+        RestTemplate template = new RestTemplate();
+        System.out.println("analyse progression");
+        String uri = "http://localhost:8080/api/";
+
+
+        Map<String, Timestamp > mapPro=map_prog;
+
+        for (Map.Entry<String, Timestamp> entry : mapPro.entrySet()) {
+            Timestamp timestamp= (Timestamp)entry.getValue();
+            Timestamp current = new Timestamp(System.currentTimeMillis());
+            if ( current.getTime() - timestamp.getTime()  >= 100000 && entry!=null) {
+                System.out.println(" ----" +entry.getKey().toString());
+                Progression  progression = template.getForObject(uri.concat(entry.getKey().toString()), Progression.class);
+                sendProgression(progression);
+                timestamp= new Timestamp(System.currentTimeMillis());
+                //map.put(pair.getKey().toString(),timestamp);
+                Creation p1= new Creation();
+
+                p1.setJoueur(entry.getKey().toString());
+                map_prog.put(p1.getJoueur(), timestamp);
+
+
+
+
+            }
+
+        }
+
+        System.out.println(" -------------------");
+
+    }
+
+    @Override
+    public Progression find_progression(String joueur) {
+        Progression progression = new Progression();
+        for (Map.Entry<String, Integer> entry : test_api.entrySet()) {
+            if(entry.getKey().toString().equals(joueur)){
+                progression.setJoueur(entry.getKey().toString());
+                progression.setNbre_reponse(entry.getValue());
+                System.out.println("find j");
+
+            }
+            System.out.println(entry.getKey().toString() + ":" + entry.getValue());
+        }
+        return progression;    }
+
+    public void sendProgression(Progression progression) {
+
+        System.out.println("sendProgression");
+        level =levelprogression(progression.getNbre_reponse());
+        String url = "http://localhost:8080/api/progression/";
+        sendGlobalApi(progression.getJoueur(), level, url.concat(progression.getJoueur()));
+    }
+
+    private String levelprogression(int nbre_reponse) {
+        if(nbre_reponse <= 1){
+            return "bas";
+        }
+        else if (nbre_reponse<=2){
+            return "normal";
+        }
+            else{
+                return "fort";
+
+        }
+    }
+
+    private String levelcuriosite(int nbre_scan) {
         if (nbre_scan <= 1 ){
             return "faible";
         }
