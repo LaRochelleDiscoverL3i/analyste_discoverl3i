@@ -33,10 +33,12 @@ public class Analyste {
     }
 
     @RequestMapping(value = "/api", method = RequestMethod.POST)
-    void sendtoapiCurio(@RequestBody Creation creation){
+    void sendtoapiCurio(@RequestBody Map<String, String > map){
 
-
+        System.out.println("joueur: ");
+        System.out.println(map);
         System.out.println("super");
+
 
     }
 

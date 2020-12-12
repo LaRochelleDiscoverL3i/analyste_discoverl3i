@@ -14,9 +14,9 @@ public class CuriositeServiceImpl implements CuriositeService {
     private static Map<String, Integer > test_api ;
     static {
         test_api = new HashMap<>();
-        test_api.put("med",2);
+        test_api.put("med",1);
         test_api.put("didi",3);
-        //test_api.put("sidi", 3);
+        test_api.put("sidi", 5);
     }
 
 
@@ -28,7 +28,6 @@ public class CuriositeServiceImpl implements CuriositeService {
     public void createCreation(Creation creation) {
 
 
-        System.out.println("test");
         p.setJoueur(creation.getJoueur());
         System.out.println(creation.getJoueur());
         System.out.println(p.getJoueur());
@@ -43,7 +42,6 @@ public class CuriositeServiceImpl implements CuriositeService {
     @Override
     public Curiosite find(String joueur){
 
-        System.out.println("find");
 
         Curiosite curio = new Curiosite();
         for (Map.Entry<String, Integer> entry : test_api.entrySet()) {
@@ -84,22 +82,22 @@ public class CuriositeServiceImpl implements CuriositeService {
         System.out.println("analyse curiosite");
         String uri = "http://localhost:8080/api/";
 
-        Creation p1= new Creation();
+
         Map<String, Timestamp > map1=map;
 
         for (Map.Entry<String, Timestamp> entry : map1.entrySet()) {
             Timestamp timestamp= (Timestamp)entry.getValue();
             Timestamp current = new Timestamp(System.currentTimeMillis());
-            if ( current.getTime() - timestamp.getTime()  >= 10000 && entry!=null) {
+            if ( current.getTime() - timestamp.getTime()  >= 100000 && entry!=null) {
                 System.out.println(" ----" +entry.getKey().toString());
                 Curiosite  curiosite = template.getForObject(uri.concat(entry.getKey().toString()), Curiosite.class);
-                System.out.println("curiosite joeur");
                 sendCuriosite(curiosite);
                 timestamp= new Timestamp(System.currentTimeMillis());
                 //map.put(pair.getKey().toString(),timestamp);
+                Creation p1= new Creation();
 
                 p1.setJoueur(entry.getKey().toString());
-                map.put(p1.joueur, timestamp);
+                map.put(p1.getJoueur(), timestamp);
 
 
 
