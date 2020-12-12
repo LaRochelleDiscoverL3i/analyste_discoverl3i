@@ -5,12 +5,20 @@ import java.sql.Timestamp;
 public class Curiosite {
 
     String joueur;
-    Timestamp timestamp;
+    int nbre_scan;
 
     public Curiosite(){};
-    public Curiosite(String joueur, Timestamp timestamp){
+    public Curiosite(String joueur, int nbre_scan){
         this.joueur=joueur;
-        this.timestamp=timestamp;
+        this.nbre_scan=nbre_scan;
+    }
+
+    public int getNbre_scan() {
+        return nbre_scan;
+    }
+
+    public void setNbre_scan(int nbre_scan) {
+        this.nbre_scan = nbre_scan;
     }
 
     public String getJoueur() {
@@ -21,13 +29,7 @@ public class Curiosite {
         this.joueur = joueur;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
 
 
 }

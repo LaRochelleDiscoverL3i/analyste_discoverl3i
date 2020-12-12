@@ -2,16 +2,18 @@ package com.example.analyste.controller;
 
 import java.sql.Timestamp;
 
-public class Progression {
+public class Creation {
 
     String joueur;
     Timestamp timestamp;
 
-    public Progression(){}
+    public Creation(){
+        this.timestamp=new Timestamp(System.currentTimeMillis());
+    }
 
-    public Progression(String joueur, Timestamp timestamp){
+    public Creation(String joueur){
         this.joueur=joueur;
-        this.timestamp=timestamp;
+        this.timestamp= new Timestamp(System.currentTimeMillis());
     }
 
     public String getJoueur() {
