@@ -1,7 +1,9 @@
 package com.example.analyste.controller;
 
 import java.sql.Timestamp;
-
+/*
+Cette classe permet de gerer chaque joueur à l'interieur de l'analyste
+ */
 public class Creation {
 
     private String joueur;
